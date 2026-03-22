@@ -1,0 +1,45 @@
+---
+- name: Prepare ubuntu:latest instance
+  hosts: vector-ubuntu-latest 
+  gather_facts: false 
+  tasks:
+    - name: Update apt cache
+      raw: apt-get update
+      changed_when: false
+
+    - name: Install python3 and python3-pip
+      raw: apt-get install -y python3 python3-pip
+      changed_when: false 
+
+    - name: Install sudo
+      raw: apt-get install -y sudo
+      changed_when: false
+
+    - name: Install openssh-server
+      raw: apt-get install -y openssh-server
+      changed_when: false
+
+    - name: Create SSH directory
+      raw: "mkdir -p /run/sshd"
+      changed_when: false
+
+    - name: Generate SSH host keys
+      raw: ssh-keygen -A
+      changed_when: false
+
+    - name: Configure SSH server for root login (for simplicity in test, consider creating user)
+      raw: |
+        echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+        echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+        echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
+      changed_when: false
+
+    - name: Set root password (for testing, use a strong one or better key-based auth)
+      raw: echo 'root:password_for_molecule' | chpasswd
+      changed_when: false
+
+    - name: Ensure SSH server is running (attempt restart)
+      raw: service ssh restart || systemctl restart ssh
+      changed_when: "'Restarting OpenBSD Secure Shell' in result.stdout or 'Active: active' in result.stdout"
+      register: result
+    

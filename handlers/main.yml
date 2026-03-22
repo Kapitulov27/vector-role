@@ -1,6 +1,7 @@
+---
 - name: restart vector
   systemd:
     name: vector
     state: restarted
     daemon_reload: yes
-    # handlers file for vector-role
+  when: vector_manage_systemd_service | default(true) 

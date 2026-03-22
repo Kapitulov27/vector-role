@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all 
+  become: true
+  tasks:
+    - name: Check if vector config exists
+      stat:
+        path: /etc/vector/vector.toml
+      register: vector_config
+      failed_when: not vector_config.stat.exists
+    - name: Check if systemd service file does NOT exist (optional, if applicable)
+      stat:
+        path: /etc/systemd/system/vector.service
+      register: vector_service_file
+      when: vector_manage_systemd_service | default(true) 

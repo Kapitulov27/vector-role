@@ -1,0 +1,30 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: vector-ubuntu-2204 # Основная платформа
+    image: geerlingguy/docker-ubuntu2204-ansible:latest
+    pre_build_image: true
+  - name: vector-ubuntu-latest # Новая платформа
+    image: ubuntu:latest
+    pre_build_image: true
+    # ansible:
+    #   ansible_user: root
+    #   ansible_password: password_for_molecule
+    #   ansible_connection: ssh
+    #   ansible_become: true
+    #   ansible_become_method: sudo
+ 
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible/tmp
+      interpreter_python: auto_silent
+      host_key_checking: false
+verifier:
+  name: ansible
+scenario:
+  name: default
