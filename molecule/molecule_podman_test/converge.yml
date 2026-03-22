@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+    - name: Role convergence test
+      debug:
+        msg: "Vector role converged successfully"
