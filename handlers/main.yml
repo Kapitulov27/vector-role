@@ -1,2 +1,6 @@
-name: restart vector systemd: name: vector state: restarted daemon_reload: yes 
-# handlers file for vector-role
+- name: restart vector
+  systemd:
+    name: vector
+    state: restarted
+    daemon_reload: yes
+    # handlers file for vector-role
