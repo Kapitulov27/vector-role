@@ -1,18 +1,8 @@
-    [sources.stdin]
-    type = "stdin" 
+# templates/vector.toml.j2
+[sources.stdin]
+type = "stdin"
 
 [sinks.console]
 type = "console"
 inputs = ["stdin"]
-templates/vector.service.j2
-[Unit]
-Description=Vector
-After=network.target
-
-[Service]
-User=root
-ExecStart=/usr/local/bin/vector --config /etc/vector/vector.toml
-Restart=always
-
-[Install]
-WantedBy=multi-user.target# tasks file for vector-role
+encoding.codec = "json"

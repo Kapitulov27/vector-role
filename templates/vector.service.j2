@@ -1,0 +1,13 @@
+# templates/vector.service.j2
+[Unit]
+Description=Vector Log Agent
+After=network.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/vector --config /etc/vector/vector.toml
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
